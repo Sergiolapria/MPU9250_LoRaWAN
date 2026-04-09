@@ -15,7 +15,7 @@ uint32_t devAddr =  ( uint32_t )0x260BCE52;
 uint16_t userChannelsMask[6]={ 0x00FF,0x0000,0x0000,0x0000,0x0000,0x0000 };
 LoRaMacRegion_t loraWanRegion = ACTIVE_REGION;
 DeviceClass_t  loraWanClass = LORAWAN_CLASS;
-uint32_t appTxDutyCycle = 5000;//5 sg
+uint32_t appTxDutyCycle = 30000;//5 sg
 bool overTheAirActivation = LORAWAN_NETMODE;
 bool loraWanAdr = LORAWAN_ADR;
 bool keepNet = LORAWAN_NET_RESERVE;
@@ -71,7 +71,7 @@ static void prepareTxFrame( uint8_t port )
 	appData[14] = puc[2];				
 	appData[15] = puc[3];
 	Serial.print("appData: ");
-	for(int i=0;i<4;i++){
+	for(int i=0;i<appDataSize;i++){
 		Serial.print(appData[i],HEX);Serial.print(" ");
 	}
 	Serial.println();
