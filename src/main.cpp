@@ -26,49 +26,55 @@ uint8_t confirmedNbTrials = 4;
  //I2C
 static void prepareTxFrame( uint8_t port )
 {
-	float aX,aY,aZ,mX,mY,mZ;
+	float aX,aY,aZ,mX,mY,mZ,aSQR;;
 	if(mySensor.accelUpdate()==0){
  		aX=mySensor.accelX();
   		aY=mySensor.accelY();
   		aZ=mySensor.accelZ();
+		aSQR=mySensor.accelSqrt();
 	}
 	if(mySensor.magUpdate()==0){
 		mX=mySensor.magX();
   		mY=mySensor.magY();
   		mZ=mySensor.magZ();
 	}
-	aX=aX*100;
-	aY=aY*100;
-	aZ=aZ*100;
-	mX=mX*100;	
-	mY=mY*100;
-	mZ=mZ*100;
-	Serial.print("aX:");Serial.print(aX);Serial.print(" aY:");Serial.print(aY);Serial.print(" aZ:");Serial.println(aZ);
-  	Serial.print(" mX:");Serial.print(mX);Serial.print(" mY:");Serial.print(mY);Serial.print(" mZ:");Serial.println(mZ);  
+	int acX=aX*100;
+	int acY=aY*100;
+	int acZ=aZ*100;
+	int acSQR=aSQR*100;
+	int maX=mX*100;	
+	int maY=mY*100;
+	int maZ=mZ*100;
+	Serial.print("aX:");Serial.print(acX);Serial.print(" aY:");Serial.print(acY);Serial.print(" aZ:");Serial.println(acZ);
+  	Serial.print(" mX:");Serial.print(maX);Serial.print(" mY:");Serial.print(maY);Serial.print(" mZ:");Serial.println(maZ);  
 
 	unsigned char *puc;
-	puc=(unsigned char*)&aX;
+	puc=(unsigned char*)&acX;
 	appDataSize = 16;
 	appData[0] = puc[0];
 	appData[1] = puc[1];
 	appData[2] = puc[2];
 	appData[3] = puc[3];
-	puc=(unsigned char*)&aY;
+	puc=(unsigned char*)&acY;
 	appData[4] = puc[0];
 	appData[5] = puc[1];			
 	appData[6] = puc[2];
 	appData[7] = puc[3];
-	puc=(unsigned char*)&aZ;
+	puc=(unsigned char*)&acZ;
 	appData[8] = puc[0];						
 	appData[9] = puc[1];
 	appData[10] = puc[2];
 	appData[11] = puc[3];
-	puc=(unsigned char*)&mX;
+	puc=(unsigned char*)&acSQR;
 	appData[12] = puc[0];
 	appData[13] = puc[1];
 	appData[14] = puc[2];				
 	appData[15] = puc[3];
-
+	Serial.print("appData: ");
+	for(int i=0;i<4;i++){
+		Serial.print(appData[i],HEX);Serial.print(" ");
+	}
+	Serial.println();
 
 }
 void setup() {
